@@ -13,11 +13,23 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Installer Java 21
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: '21'
           cache: maven
+          cache-dependency-path: EnchantedItems/pom.xml
+
+      - name: Compiler le plugin
+        working-directory: EnchantedItems
+        run: mvn --batch-mode clean package
+
+      - name: Publier le fichier JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: EnchantedItems
+          path: EnchantedItems/target/*.jar
+
 
       - name: Compiler le plugin
         run: mvn --batch-mode clean package
